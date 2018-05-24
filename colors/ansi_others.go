@@ -6,13 +6,10 @@
 
 package colors
 
-import "io"
+import (
+	"io"
+)
 
-type ansiColorWriter struct {
-	w    io.Writer
-	mode outputMode
-}
-
-func (cw *ansiColorWriter) Write(p []byte) (int, error) {
-	return cw.w.Write(p)
+func colored(w io.Writer) io.Writer {
+	return w
 }

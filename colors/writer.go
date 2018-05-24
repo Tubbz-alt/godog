@@ -4,19 +4,8 @@
 
 package colors
 
-import "io"
-
-type outputMode int
-
-// DiscardNonColorEscSeq supports the divided color escape sequence.
-// But non-color escape sequence is not output.
-// Please use the OutputNonColorEscSeq If you want to output a non-color
-// escape sequences such as ncurses. However, it does not support the divided
-// color escape sequence.
-const (
-	_ outputMode = iota
-	discardNonColorEscSeq
-	outputNonColorEscSeq
+import (
+	"io"
 )
 
 // Colored creates and initializes a new ansiColorWriter
@@ -25,17 +14,5 @@ const (
 // colors of the text by the escape sequence.
 // In the console of other systems, which writes to w all text.
 func Colored(w io.Writer) io.Writer {
-	return createModeAnsiColorWriter(w, discardNonColorEscSeq)
-}
-
-// NewModeAnsiColorWriter create and initializes a new ansiColorWriter
-// by specifying the outputMode.
-func createModeAnsiColorWriter(w io.Writer, mode outputMode) io.Writer {
-	if _, ok := w.(*ansiColorWriter); !ok {
-		return &ansiColorWriter{
-			w:    w,
-			mode: mode,
-		}
-	}
-	return w
+	return colored(w)
 }
