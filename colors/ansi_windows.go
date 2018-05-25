@@ -93,7 +93,7 @@ type ansiColorWriter struct {
 
 func colored(w io.Writer) io.Writer {
 	var csbi consoleScreenBufferInfo
-	handle := syscall.Handle(os.Stdout)
+	handle := syscall.Handle(os.Stdout.Fd())
 	if file, ok := w.(*os.File); ok {
 		handle = syscall.Handle(file.Fd())
 	}
