@@ -66,11 +66,14 @@ func (j *junitFormatter) Node(node interface{}) {
 		return
 	case *gherkin.Scenario:
 		tcase.Name = t.Name
+		tcase.Classname = t.Name
 		suite.Tests++
 		j.suite.Tests++
 	case *gherkin.TableRow:
 		j.outlineExample++
-		tcase.Name = fmt.Sprintf("%s #%d", j.outline.Name, j.outlineExample)
+		name := fmt.Sprintf("%s #%d", j.outline.Name, j.outlineExample)
+		tcase.Name = name
+		tcase.Classname = name
 		suite.Tests++
 		j.suite.Tests++
 	default:
@@ -171,12 +174,13 @@ type junitError struct {
 }
 
 type junitTestCase struct {
-	XMLName xml.Name      `xml:"testcase"`
-	Name    string        `xml:"name,attr"`
-	Status  string        `xml:"status,attr"`
-	Time    string        `xml:"time,attr"`
-	Failure *junitFailure `xml:"failure,omitempty"`
-	Error   []*junitError
+	XMLName   xml.Name      `xml:"testcase"`
+	Name      string        `xml:"name,attr"`
+	Classname string        `xml:"classname,attr"`
+	Status    string        `xml:"status,attr"`
+	Time      string        `xml:"time,attr"`
+	Failure   *junitFailure `xml:"failure,omitempty"`
+	Error     []*junitError
 }
 
 type junitTestSuite struct {
